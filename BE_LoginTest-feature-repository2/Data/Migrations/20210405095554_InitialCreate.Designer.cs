@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(SchoolDbContext))]
-    [Migration("20210401040115_Create")]
-    partial class Create
+    [Migration("20210405095554_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,6 +35,8 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Class");
                 });
@@ -69,7 +71,37 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClassId");
+
                     b.ToTable("Student");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Class", b =>
+                {
+                    b.HasOne("Domain.Entities.Department", null)
+                        .WithMany("Classes")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Student", b =>
+                {
+                    b.HasOne("Domain.Entities.Class", null)
+                        .WithMany("Students")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Class", b =>
+                {
+                    b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Department", b =>
+                {
+                    b.Navigation("Classes");
                 });
 #pragma warning restore 612, 618
         }

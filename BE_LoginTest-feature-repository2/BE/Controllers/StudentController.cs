@@ -26,8 +26,8 @@ namespace BE.Controllers
         [Route("[action]")]
         public IActionResult Insert([FromBody] StudentDTO body)
         {
-            _studentService.Insert(body);
-            return Ok();
+            var res = _studentService.Insert(body);
+            return Ok(res);
         }
 
         [HttpGet]
@@ -40,8 +40,8 @@ namespace BE.Controllers
         [HttpDelete]
         public IActionResult Delete([FromQuery] Guid Id)
         {
-            _studentService.Delete(Id);
-            return Ok();
+            var res =_studentService.Delete(Id);
+            return Ok(res);
         }
 
         [HttpPut]
@@ -52,17 +52,21 @@ namespace BE.Controllers
         }
 
         [HttpGet("{Id}")]
+        [Route("id")]
+
         public IActionResult GetById([FromQuery] Guid Id)
         {
-            _studentService.SearchById(Id);
-            return Ok();
+            var res = _studentService.SearchById(Id);
+            return Ok(res);
         }
 
         [HttpGet("{name}")]
+        [Route("name")]
+
         public IActionResult GetByName([FromQuery] string name)
         {
-            _studentService.SearchByName(name);
-            return Ok();
+            var res =_studentService.SearchByName(name);
+            return Ok(res);
         }
     }
 }

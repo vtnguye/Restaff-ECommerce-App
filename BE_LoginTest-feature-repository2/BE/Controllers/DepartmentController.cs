@@ -36,11 +36,19 @@ namespace BE.Controllers
             return Ok(res);
         }
 
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetAll()
+        {
+            var res = _departmentService.GetAll();
+            return Ok(res);
+        }
+
         [HttpDelete]
         public IActionResult Delete([FromQuery] Guid Id)
         {
-            _departmentService.Delete(Id);
-            return Ok();
+            var res = _departmentService.Delete(Id);
+            return Ok(res);
         }
 
         [HttpPut]

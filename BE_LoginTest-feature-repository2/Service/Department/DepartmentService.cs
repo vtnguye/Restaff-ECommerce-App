@@ -13,15 +13,23 @@ namespace Service.Department
     public class DepartmentService : IDepartmentService
     {
         private SchoolDbContext _db;
-        private IRepository<Domain.Entities.Department> _repo;
+        private IRepository<Domain.Entities.Department> _departmentRepo;
+        private IRepository<Domain.Entities.Class> _classRepo;
         private IMapper _mapper;
         private IUnitOfWork _unit;
-        public DepartmentService(SchoolDbContext db, IRepository<Domain.Entities.Department> repo, IMapper mapper, IUnitOfWork unit)
+        public DepartmentService(SchoolDbContext db, IRepository<Domain.Entities.Department> repo, IMapper mapper, IUnitOfWork unit, IRepository<Domain.Entities.Class> classRepo)
         {
             _db = db;
             _mapper = mapper;
-            _repo = repo;
+            _departmentRepo = repo;
             _unit = unit;
+            _classRepo = classRepo;
+        }
+
+        public List<DepartmentDTO> GetAll()
+        {
+            var res = _mapper.Map<List<Domain.Entities.Department>, List<DepartmentDTO>>(_departmentRepo.Queryable().ToList());
+            return res;
         }
 
         public Pagination<DepartmentDTO> Get(SearchPaginationDTO<DepartmentDTO> paging)
@@ -40,33 +48,42 @@ namespace Service.Department
 
             var result = _mapper.Map<SearchPaginationDTO<DepartmentDTO>, Pagination<DepartmentDTO>>(paging);
             var departments = data.Take(paging.Take).Skip(paging.Skip).ToList();
-            var departmentDTOs = _mapper.Map<List<Domain.Entities.Department>,List<DepartmentDTO>>(departments);
+            var departmentDTOs = _mapper.Map<List<Domain.Entities.Department>, List<DepartmentDTO>>(departments);
 
             result.InputData(totalItems: data.Count(), data: departmentDTOs);
             return result;
         }
 
-        public void Delete(Guid Id)
+        public bool Delete(Guid Id)
         {
-            _repo.Delete(Id);
-            _unit.SaveChanges();
+            var res = _classRepo.Queryable().Where(t => t.DepartmentId == Id).FirstOrDefault();
 
+            if (res == null)
+            {
+                _departmentRepo.Delete(Id);
+                _unit.SaveChanges();
+                return true;
+            }
+
+            return false;
         }
 
         public void Update(DepartmentDTO body)
         {
             var department = _mapper.Map<Domain.Entities.Department>(body);
-            _repo.Update(department);
+            _departmentRepo.Update(department);
             _unit.SaveChanges();
 
         }
 
         public void Insert(DepartmentDTO body)
         {
+
             body.Id = Guid.NewGuid();
             var department = _mapper.Map<Domain.Entities.Department>(body);
-            _repo.Insert(department);
+            _departmentRepo.Insert(department);
             _unit.SaveChanges();
+
 
         }
 

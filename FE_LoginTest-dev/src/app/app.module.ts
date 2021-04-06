@@ -29,6 +29,7 @@ import { DepartmentService } from './service/department/department.service';
 import { EditComponent as DepartmentEditComponent } from './pages/department/edit/edit.component';
 import { EditComponent as ClassEditComponent } from './pages/class/edit/edit.component';
 import { EditComponent as StudentEditComponent } from './pages/student/edit/edit.component';
+import { SearchComponent } from './pages/student/search/search.component';
 
 registerLocaleData(en);
 enableProdMode();
@@ -42,7 +43,8 @@ enableProdMode();
     ClassAddComponent,
     DepartmentEditComponent,
     ClassEditComponent,
-    StudentEditComponent
+    StudentEditComponent,
+    SearchComponent
   ],
   imports: [
     SharedModule,

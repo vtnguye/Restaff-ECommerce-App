@@ -1,3 +1,4 @@
 export class Student {
-    name:string
+    name:string;
+    classId:string
 }

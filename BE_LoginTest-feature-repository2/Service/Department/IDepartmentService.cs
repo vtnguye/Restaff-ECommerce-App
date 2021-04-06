@@ -9,8 +9,10 @@ namespace Service.Department
 {
     public interface IDepartmentService
     {
+        public List<DepartmentDTO> GetAll();
+
         public Pagination<DepartmentDTO> Get(SearchPaginationDTO<DepartmentDTO> paging);
-        public void Delete(Guid Id);
+        public bool Delete(Guid Id);
         public void Update(DepartmentDTO body);
         public void Insert(DepartmentDTO body);
 

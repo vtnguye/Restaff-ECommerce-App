@@ -29,4 +29,10 @@ export class BaseService {
     {
         return this.http.delete(`${url}?id=`+id);
     }
+
+    public getAll<T>(url: string)
+    {
+        return this.http.get<T>(url);
+    }
+
 }

@@ -1,4 +1,6 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { identity } from 'lodash';
 import { BaseService } from '../base.service';
 
 @Injectable({
@@ -21,5 +23,13 @@ export class StudentService {
   }
   update(model: any) {
     return this.baseService.put(this.Url, model);
+  }
+  getById(id: any) {
+    let params = new HttpParams().set('id', id);
+    return this.baseService.get(this.Url + "/id", { params: params });
+  }
+  getByName(name: any) {
+    let params = new HttpParams().set('name', name);
+    return this.baseService.get(this.Url + "/name", { params: params });
   }
 }

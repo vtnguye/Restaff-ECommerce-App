@@ -19,7 +19,6 @@ export class AddComponent implements OnInit {
   department: Department
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router,
     private ngbActiveModal: NgbActiveModal,
     private departmentService: DepartmentService
   ) { }
@@ -42,14 +41,12 @@ export class AddComponent implements OnInit {
       .subscribe(resp => {
         this.addForm.reset();
         this.submitted=false;
-        this.message = 'Added Successfully'
+        this.message = 'Added Successfully';
       },
         error => this.message=error)
   }
   close(event : any) {
-    console.log(event);
     this.ngbActiveModal.close();
-    this.reload();
   }
 
 }

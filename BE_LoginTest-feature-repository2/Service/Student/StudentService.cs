@@ -14,22 +14,25 @@ namespace Service.Student
 
     {
         private SchoolDbContext _db;
-        private IRepository<Domain.Entities.Student> _repo;
+        private IRepository<Domain.Entities.Student> _studentRepo;
+        private IRepository<Domain.Entities.Class> _classRepo;
         private IMapper _mapper;
         private IUnitOfWork _unit;
 
-        public StudentService(SchoolDbContext db, IRepository<Domain.Entities.Student> repo, IMapper mapper, IUnitOfWork unit)
+        public StudentService(SchoolDbContext db, IRepository<Domain.Entities.Student> studentRepo, IMapper mapper, IUnitOfWork unit, IRepository<Domain.Entities.Class> classRepo)
         {
             _db = db;
             _mapper = mapper;
-            _repo = repo;
+            _studentRepo = studentRepo;
             _unit = unit;
+            _classRepo = classRepo;
         }
 
-        public void Delete(Guid Id)
+        public bool Delete(Guid Id)
         {
-            _repo.Delete(Id);
+            _studentRepo.Delete(Id);
             _unit.SaveChanges();
+            return true;
         }
 
         public Pagination<StudentDTO> Get(SearchPaginationDTO<StudentDTO> paging)
@@ -54,33 +57,53 @@ namespace Service.Student
             return result;
         }
 
-        public void Insert(StudentDTO body)
+        public bool Insert(StudentDTO body)
         {
+            if (body.Name == null || body.ClassId == null)
+            {
+                throw new ArgumentNullException("Name or Department Id cannot be null");
+            }
+
+            var result = _classRepo.Queryable().Where(t => t.Id == body.ClassId).FirstOrDefault();
+
+            if (result == null)
+            {
+                return false;
+            }
+
+
             body.Id = Guid.NewGuid();
-            body.ClassId = Guid.NewGuid();
             var students = _mapper.Map<Domain.Entities.Student>(body);
-            _repo.Insert(students);
+            _studentRepo.Insert(students);
             _unit.SaveChanges();
+
+
+            return true;
         }
 
         public StudentDTO SearchById(Guid Id)
         {
-            var student = _repo.Find(Id);
+            var student = _studentRepo.Find(Id);
+            if(student == null)
+            {
+                return new StudentDTO();
+            }
             var res = _mapper.Map<StudentDTO>(student);
             return res;
         }
 
-        public StudentDTO SearchByName(string name)
+        public List<StudentDTO> SearchByName(string name)
         {
-            var student = _repo.Find(name);
-            var res = _mapper.Map<StudentDTO>(student);
+            var student = _db.Student.Where(t=> t.Name == name).ToList();
+
+            var res = _mapper.Map<List<StudentDTO>>(student);
             return res;
         }
 
         public void Update(StudentDTO body)
         {
             var students = _mapper.Map<Domain.Entities.Student>(body);
-            _repo.Update(students);
+            _studentRepo.Update(students);
             _unit.SaveChanges();
         }
     }

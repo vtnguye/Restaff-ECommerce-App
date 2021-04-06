@@ -26,8 +26,8 @@ namespace BE.Controllers
         [Route("[action]")]
         public IActionResult Insert([FromBody] ClassDTO body)
         {
-            _classService.Insert(body);
-            return Ok();
+            var res = _classService.Insert(body);
+            return Ok(res);
         }
 
         [HttpGet]
@@ -37,11 +37,19 @@ namespace BE.Controllers
             return Ok(res);
         }
 
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetAll()
+        {
+            var res = _classService.GetAll();
+            return Ok(res);
+        }
+
         [HttpDelete]
         public IActionResult Delete([FromQuery] Guid Id)
         {
-            _classService.Delete(Id);
-            return Ok();
+            var res = _classService.Delete(Id);
+            return Ok(res);
         }
 
         [HttpPut]

@@ -13,22 +13,47 @@ namespace Service.Class
     public class ClassService : IClassService
     {
         private SchoolDbContext _db;
-        private IRepository<Domain.Entities.Class> _repo;
+        private IRepository<Domain.Entities.Class> _classRepo;
+        private IRepository<Domain.Entities.Department> _departmentRepo;
+        private IRepository<Domain.Entities.Student> _studentRepo;
+
         private IMapper _mapper;
         private IUnitOfWork _unit;
 
-        public ClassService(SchoolDbContext db, IRepository<Domain.Entities.Class> repo, IMapper mapper, IUnitOfWork unit)
+        public ClassService(SchoolDbContext db, IRepository<Domain.Entities.Class> classRepo,
+            IMapper mapper,
+            IUnitOfWork unit,
+            IRepository<Domain.Entities.Department> departmentRepo,
+            IRepository<Domain.Entities.Student> studentRepo
+            )
         {
+            _departmentRepo = departmentRepo;
             _db = db;
             _mapper = mapper;
-            _repo = repo;
+            _classRepo = classRepo;
             _unit = unit;
+            _studentRepo = studentRepo;
         }
-        public void Delete(Guid Id)
+
+        public List<ClassDTO> GetAll()
         {
-            _repo.Delete(Id);
-            _unit.SaveChanges();
+            var res = _mapper.Map<List<Domain.Entities.Class>,List<ClassDTO>>(_classRepo.Queryable().ToList());
+            return res;
         }
+        public bool Delete(Guid Id)
+        {
+            var res = _studentRepo.Queryable().Where(t => t.ClassId == Id).FirstOrDefault();
+            if (res == null)
+            {
+                _classRepo.Delete(Id);
+                _unit.SaveChanges();
+
+
+                return true;
+            }
+            return false;
+        }
+
 
         public Pagination<ClassDTO> Get(SearchPaginationDTO<ClassDTO> paging)
         {
@@ -52,20 +77,35 @@ namespace Service.Class
             return result;
         }
 
-        public void Insert(ClassDTO body)
+        public bool Insert(ClassDTO body)
         {
-            body.Id = Guid.NewGuid();
-            body.DepartmentId = Guid.NewGuid();
-            var classes = _mapper.Map<Domain.Entities.Class>(body);
-            _repo.Insert(classes);
-            _unit.SaveChanges();
 
+            if (body.Name == null || body.DepartmentId == null)
+            {
+                throw new ArgumentNullException("Name or Department Id cannot be null");
+            }
+
+            var result = _departmentRepo.Queryable().Where(t => t.Id == body.DepartmentId).FirstOrDefault();
+
+            if (result == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < 50; i++)
+            {
+                body.Id = Guid.NewGuid();
+                var classes = _mapper.Map<Domain.Entities.Class>(body);
+                _classRepo.Insert(classes);
+                _unit.SaveChanges();
+            }
+            return true;
         }
 
         public void Update(ClassDTO body)
         {
             var classes = _mapper.Map<Domain.Entities.Class>(body);
-            _repo.Update(classes);
+            _classRepo.Update(classes);
             _unit.SaveChanges();
 
         }

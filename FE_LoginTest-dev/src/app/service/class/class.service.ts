@@ -22,4 +22,9 @@ export class ClassService {
   update(model: any) {
     return this.baseService.put(this.Url, model);
   }
+
+  get(){
+    return this.baseService.getAll(this.Url+"/getall");
+  }
+
 }

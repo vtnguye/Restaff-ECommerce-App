@@ -5,6 +5,7 @@ import { Department } from 'src/app/models/department';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { StudentService } from 'src/app/service/student/student.service';
 import { Student } from 'src/app/models/student';
+import { ClassService } from 'src/app/service/class/class.service';
 
 @Component({
   selector: 'app-add',
@@ -17,28 +18,43 @@ export class AddComponent implements OnInit {
   message : string 
   loading = false
   submitted = false
+  classes: any[] =[]
   student: Student
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private ngbActiveModal: NgbActiveModal,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private classSerive:ClassService
   ) { }
 
   ngOnInit(): void {
+    this.load();
+  }
+  load(){
     this.addForm = this.formBuilder.group({
       name: ['', Validators.required],
-      quantity: ['', Validators.required],
-      image: ['', Validators.required],
-
+      classId: ['', Validators.required],
     })
+    this.loadClasses();
+  }
+
+  loadClasses(){
+    this.classSerive.get().subscribe(
+      (resp:any)=>
+      resp.forEach((items:any) =>{
+        this.classes.push(items.id);
+      }
+      )
+    )
   }
 
   get data() { return this.addForm.controls; }
   insert() {
     this.submitted = true;
     this.student = {
-      name: this.data.name.value
+      name: this.data.name.value,
+      classId:this.data.classId.value
     }
     this.studentService.add(this.student)
       .subscribe(resp => {
@@ -48,10 +64,12 @@ export class AddComponent implements OnInit {
       },
         error => this.message=error)
   }
+
+  setClassId(){
+    console.log(this.data.classId.value);
+  }
   close(event : any) {
-    console.log(event);
     this.ngbActiveModal.close();
-    this.reload();
   }
 
 }

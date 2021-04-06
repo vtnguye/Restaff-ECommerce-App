@@ -12,5 +12,7 @@ namespace Domain.Entities
 
         [Required]
         public Guid DepartmentId { get; set; }
+
+        public ICollection<Student> Students { get; set; }
     }
 }

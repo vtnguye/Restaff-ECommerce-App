@@ -48,14 +48,11 @@ export class EditComponent implements OnInit {
         this.editForm.reset();
         this.submitted = false;
         this.message = 'Updated Successfully';
-        this.close(null);
       },
         error => this.message = error)
   }
   close(event: any) {
-    console.log(event);
     this.ngbActiveModal.close();
-    this.reload();
   }
 
 }
