@@ -1,0 +1,40 @@
+<div class="container">
+  <span class="review row text-dark">Reviews</span>
+  <form
+    [formGroup]="commentForm"
+    (ngSubmit)="Submit()"
+    *ngIf="isLoading; else checkLoginToComment"
+  >
+    <div class="row pt-3">
+      <div class="form-group col-md-12 m-0 p-0">
+        <textarea
+          class="form-control"
+          rows="4"
+          formControlName="content"
+          placeholder="Leave your review"
+        ></textarea>
+      </div>
+      <div class="col-md-12 m-0 p-0">
+        <ngb-rating [max]="5" [(rate)]="currentRate" formControlName="rating">
+          <ng-template let-fill="fill" let-index="index">
+            <span class="star" [class.filled]="fill === 100">&#9733;</span>
+          </ng-template>
+        </ngb-rating>
+      </div>
+      <div class="col-md-12 m-0 p-0">
+        <button class="btn btn-solid" type="submit">Send</button>
+      </div>
+    </div>
+  </form>
+  <ng-template #checkLoginToComment>
+    <div class="row mt-3">
+      <span
+        >Please
+        <span (click)="returnLogin()" style="cursor: pointer; color: #0089ff"
+          >Login
+        </span>
+        to comment</span
+      >
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,323 @@
+<app-breadcrumb [title]="'Profile'" [breadcrumb]="'Profile'"></app-breadcrumb>
+<section class="contact-page register-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-row">
+          <h3 class="col-md-6">PERSONAL DETAIL</h3>
+          <div class="pull-right" [hidden]="!updateProfile">
+            <button class="btn btn-sm btn-solid" (click)="profileSwith()">
+              Edit
+            </button>
+          </div>
+        </div>
+
+        <form class="theme-form" [formGroup]="profileForm">
+          <div class="form-row">
+            <!-- <div class="col-md-12 form-group">
+              <label for="name">Avatar</label>
+              <br />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="imageUrl"
+                id="address-two"
+                placeholder="Avatar"
+                required=""
+                [ngClass]="{
+                  'is-invalid': fProfile.imageUrl.errors
+                }"
+                hidden
+              />
+              <div
+                *ngIf="fProfile.imageUrl.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="fProfile.imageUrl.errors.required">
+                  Avatar is required
+                </div>
+              </div>
+              <img
+                *ngIf="updateProfile"
+                [src]="
+                  user
+                    ? getImage(user.imageUrl)
+                    : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png'
+                "
+                style="height: 250px; width: 250px"
+              />
+              <app-upload-file
+                *ngIf="!updateProfile"
+                [data]="modalFile"
+                [fileURL]="fileURL"
+                styleFile="width: 250px; height: 250px;"
+                (onChange)="onChangeData($event)"
+              ></app-upload-file>
+            </div> -->
+            <div class="col-md-6 form-group">
+              <label for="name">First Name</label>
+              <input
+                formControlName="firstName"
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="First Name"
+                [readonly]="updateProfile"
+                [ngClass]="{
+                  'is-invalid': submittedProfile && fProfile.firstName.errors
+                }"
+              />
+              <div
+                *ngIf="submittedProfile && fProfile.firstName.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="fProfile.firstName.errors.required">
+                  First Name is required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="email">Last Name</label>
+              <input
+                formControlName="lastName"
+                type="text"
+                class="form-control"
+                id="last-name"
+                placeholder="Last Name"
+                [readonly]="updateProfile"
+                [ngClass]="{
+                  'is-invalid': submittedProfile && fProfile.lastName.errors
+                }"
+              />
+              <div *ngIf="fProfile.lastName.errors" class="invalid-feedback">
+                <div
+                  *ngIf="submittedProfile && fProfile.lastName.errors.required"
+                >
+                  Last Name is required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="review">Phone number</label>
+              <input
+                formControlName="phone"
+                type="tel"
+                class="form-control"
+                id="review"
+                placeholder="Enter your phone"
+                [readonly]="updateProfile"
+                [ngClass]="{
+                  'is-invalid': submittedProfile && fProfile.phone.errors
+                }"
+              />
+              <div
+                *ngIf="submittedProfile && fProfile.phone.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="fProfile.phone.errors?.required">
+                  Phone is required
+                </div>
+                <div *ngIf="fProfile.phone.errors?.pattern">
+                  Fail type phone
+                </div>
+                <div *ngIf="fProfile.phone.errors?.isPhoneUnique">
+                  Phone is exsist
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="email">Email</label>
+              <input
+                formControlName="email"
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="Email"
+                [readonly]="updateProfile"
+                [ngClass]="{
+                  'is-invalid': submittedProfile && fProfile.email.errors
+                }"
+              />
+              <div
+                *ngIf="submittedProfile && fProfile.email.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="fProfile.email.errors?.required">
+                  Email is required
+                </div>
+                <div *ngIf="fProfile.email.errors?.pattern">
+                  Fail type email
+                </div>
+                <div *ngIf="fProfile.email.errors?.isEmailUnique">
+                  Email is exsist
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="name">Address</label>
+              <input
+                formControlName="address"
+                type="text"
+                class="form-control"
+                id="address-two"
+                placeholder="Address"
+                [readonly]="updateProfile"
+                [ngClass]="{
+                  'is-invalid': submittedProfile && fProfile.address.errors
+                }"
+              />
+              <div
+                *ngIf="submittedProfile && fProfile.address.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="fProfile.address.errors.required">
+                  Address is required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12" [hidden]="updateProfile">
+              <div class="pull-left" style="margin-right: 5px">
+                <button class="btn btn-sm btn-solid" (click)="profileSwith()">
+                  Cancel
+                </button>
+              </div>
+
+              <div class="pull-left">
+                <button
+                  class="btn btn-sm btn-solid"
+                  (click)="onUpdateProfile()"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--Password-->
+<section class="contact-page register-page section-b-space">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-row">
+          <h3 class="col-md-6">Change Password</h3>
+          <div class="pull-right" [hidden]="!updatePassword">
+            <button class="btn btn-sm btn-solid" (click)="passwordSwith()">
+              Edit
+            </button>
+          </div>
+        </div>
+        <form
+          class="theme-form"
+          [hidden]="updatePassword"
+          [formGroup]="changePasswordForm"
+        >
+          <div class="form-group">
+            <div class="col-md-6">
+              <label for="name">Current Password</label>
+              <input
+                type="password"
+                class="form-control"
+                autocomplete="new-password"
+                placeholder="Current Passwor"
+                formControlName="password"
+                [ngClass]="{
+                  'is-invalid': submittedPassword && fPassword.password.errors
+                }"
+              />
+              <div *ngIf="fPassword.password.errors" class="invalid-feedback">
+                <div
+                  *ngIf="
+                    submittedPassword && fPassword.password.errors.required
+                  "
+                >
+                  Current Password is required
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="name">New Password</label>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="New Password"
+                formControlName="newPassword"
+                autocomplete="new-password"
+                [ngClass]="{
+                  'is-invalid':
+                    submittedPassword && fPassword.newPassword.errors
+                }"
+              />
+              <div
+                *ngIf="fPassword.newPassword.errors"
+                class="invalid-feedback"
+              >
+                <div
+                  *ngIf="
+                    submittedPassword && fPassword.newPassword.errors.required
+                  "
+                >
+                  New Password is required
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="name">Confirm Password</label>
+              <input
+                type="password"
+                class="form-control"
+                formControlName="confirmPassword"
+                placeholder="Confirm Password"
+                autocomplete="new-password"
+                [ngClass]="{
+                  'is-invalid':
+                    submittedPassword && fPassword.confirmPassword.errors
+                }"
+              />
+              <div
+                *ngIf="fPassword.confirmPassword.errors"
+                class="invalid-feedback"
+              >
+                <div
+                  *ngIf="
+                    submittedPassword &&
+                    fPassword.confirmPassword.errors.required
+                  "
+                >
+                  Confirm Password is required
+                </div>
+                <div *ngIf="fPassword.confirmPassword.errors.mustMatch">
+                  Passwords must match
+                </div>
+              </div>
+            </div>
+
+            <br />
+            <div class="col-md-12" [hidden]="updatePassword">
+              <div class="pull-left" style="margin-right: 5px">
+                <button class="btn btn-sm btn-solid" (click)="passwordSwith()">
+                  Cancel
+                </button>
+              </div>
+
+              <div class="pull-left">
+                <button
+                  class="btn btn-sm btn-solid"
+                  (click)="onChangePassword()"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

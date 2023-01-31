@@ -1,0 +1,365 @@
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+  <div class="row" style="justify-content: center">
+    <div class="col-xl-12">
+      <div class="card tab2-card mb-4">
+        <div class="card-body">
+          <ngb-tabset class="tab-coupon profile-tabs">
+            <ngb-tab>
+              <ng-template ngbTabTitle>
+                <app-feather-icons [icon]="'user'"></app-feather-icons>Profile
+              </ng-template>
+
+              <ng-template ngbTabContent>
+                <div
+                  class="tab-pane fade show active"
+                  id="top-profile"
+                  role="tabpanel"
+                  aria-labelledby="top-profile-tab"
+                >
+                  <div class="row">
+                    <div class="col-11">
+                      <div
+                        class="
+                          d-flex
+                          justify-content-between
+                          align-items-baseline
+                          mb-2
+                        "
+                      >
+                        <h5 class="f-w-600">Profile</h5>
+                        <div class="pull-right" *ngIf="!update">
+                          <button
+                            (click)="updateSwitch()"
+                            class="btn btn-primary"
+                          >
+                            Update Profile
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="table-responsive profile-table" *ngIf="!update">
+                    <table class="table table-responsive">
+                      <tbody>
+                        <tr>
+                          <td>First Name:</td>
+                          <td>{{ userInfo?.firstName }}</td>
+                        </tr>
+                        <tr>
+                          <td>Last Name:</td>
+                          <td>{{ userInfo?.lastName }}</td>
+                        </tr>
+                        <tr>
+                          <td>Email:</td>
+                          <td>{{ userInfo?.email }}</td>
+                        </tr>
+                        <tr>
+                          <td>Avatar:</td>
+                          <!-- <td>{{userInfo.imageUrl}}</td> -->
+                          <img
+                            [src]="getImage"
+                            style="width: 200px; height: 200px"
+                            appUiImageLoader
+                          />
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div *ngIf="update">
+                  <form
+                    [formGroup]="profileForm"
+                    class="needs-validation user-add"
+                    novalidate=""
+                  >
+                    <div class="form-group row">
+                      <label for="validationCustom0" class="col-xl-3 col-md-4"
+                        ><span>*</span> First name</label
+                      >
+                      <input
+                        class="form-control col-xl-5 col-md-7"
+                        id="validationCustom0"
+                        type="text"
+                        required
+                        formControlName="firstName"
+                        [ngClass]="{
+                          'is-invalid':
+                            (profileFormControl.firstName.touched ||
+                              submitted) &&
+                            profileFormControl.firstName.errors?.required
+                        }"
+                      />
+                      <div class="invalid-feedback col-md-3 offset-md-3">
+                        <span
+                          class="text-danger"
+                          *ngIf="
+                            (profileFormControl.firstName.touched ||
+                              submitted) &&
+                            profileFormControl.firstName.errors?.required
+                          "
+                        >
+                          This field is required
+                        </span>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="" class="col-xl-3 col-md-4"
+                        ><span>*</span> Last name</label
+                      >
+                      <input
+                        class="form-control col-xl-5 col-md-7"
+                        id=""
+                        type="text"
+                        formControlName="lastName"
+                        [ngClass]="{
+                          'is-invalid':
+                            (profileFormControl.lastName.touched ||
+                              submitted) &&
+                            profileFormControl.lastName.errors?.required
+                        }"
+                      />
+                      <div class="invalid-feedback col-md-3 offset-md-3">
+                        <span
+                          class="text-danger"
+                          *ngIf="
+                            (profileFormControl.lastName.touched ||
+                              submitted) &&
+                            profileFormControl.lastName.errors?.required
+                          "
+                        >
+                          Last name is required
+                        </span>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="validationCustom1" class="col-xl-3 col-md-4"
+                        ><span>*</span> Email</label
+                      >
+                      <input
+                        class="form-control col-xl-5 col-md-7"
+                        id="validationCustom1"
+                        type="text"
+                        required=""
+                        formControlName="email"
+                        [ngClass]="{
+                          'is-invalid':
+                            (profileFormControl.email.touched || submitted) &&
+                            profileFormControl.email.errors?.required
+                        }"
+                      />
+                      <div class="invalid-feedback col-md-3 offset-md-3">
+                        <span
+                          class="text-danger"
+                          *ngIf="
+                            (profileFormControl.email.touched || submitted) &&
+                            profileFormControl.email.errors?.required
+                          "
+                        >
+                          This field is required
+                        </span>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="validationCustom2" class="col-xl-3 col-md-4"
+                        ><span>*</span> Avatar</label
+                      >
+                      <input
+                        class="form-control"
+                        id="validationCustom2"
+                        type="text"
+                        required=""
+                        formControlName="imageUrl"
+                        hidden
+                        [ngClass]="{
+                          'is-invalid':
+                            (profileFormControl.imageUrl.touched ||
+                              submitted) &&
+                            profileFormControl.imageUrl.errors?.required
+                        }"
+                      />
+                      <div class="col-xl-5 col-md-7 p-0">
+                        <app-upload-file
+                          [data]="modalFile"
+                          [fileURL]="fileURL"
+                          styleFile="width: 100% height: auto;"
+                          (onChange)="onChangeData($event)"
+                        ></app-upload-file>
+                      </div>
+                      <div class="invalid-feedback col-md-3 offset-md-3">
+                        <span
+                          class="text-danger"
+                          *ngIf="
+                            (profileFormControl.imageUrl.touched ||
+                              submitted) &&
+                            profileFormControl.imageUrl.errors?.required
+                          "
+                        >
+                          This field is required
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-11">
+                        <div class="row justify-content-between float-right">
+                          <button
+                            *ngIf="update"
+                            (click)="updateSwitch()"
+                            class="btn btn-default"
+                          >
+                            CANCEL
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-primary"
+                            (click)="updateDetails()"
+                          >
+                            SAVE
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+              <ng-template ngbTabTitle>
+                <i data-feather="settings"></i> Change Password
+              </ng-template>
+              <ng-template ngbTabContent>
+                <form
+                  [formGroup]="passwordForm"
+                  class="needs-validation user-add"
+                  novalidate=""
+                >
+                  <h5 class="f-w-600">Change Password</h5>
+                  <div class="form-group row">
+                    <label for="" class="col-xl-3 col-md-4"
+                      ><span>*</span> Password</label
+                    >
+                    <input
+                      class="form-control col-xl-5 col-md-7"
+                      id=""
+                      type="password"
+                      formControlName="password"
+                      [ngClass]="{
+                        'is-invalid':
+                          (passwordFormControl.password.touched || submitted) &&
+                          passwordFormControl.password.errors?.required
+                      }"
+                    />
+                    <div class="invalid-feedback col-md-3 offset-md-4">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          (passwordFormControl.password.touched || submitted) &&
+                          passwordFormControl.password.errors?.required
+                        "
+                      >
+                        This field is required
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="validationCustom1" class="col-xl-3 col-md-4"
+                      ><span>*</span> New Password</label
+                    >
+                    <input
+                      class="form-control col-xl-5 col-md-7"
+                      id="validationCustom1"
+                      type="password"
+                      required=""
+                      formControlName="newPassword"
+                      [ngClass]="{
+                        'is-invalid':
+                          (passwordFormControl.newPassword.touched ||
+                            submitted) &&
+                          passwordFormControl.newPassword.errors?.required
+                      }"
+                    />
+                    <div class="invalid-feedback col-md-3 offset-md-4">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          (passwordFormControl.newPassword.touched ||
+                            submitted) &&
+                          passwordFormControl.newPassword.errors?.required
+                        "
+                      >
+                        This field is required
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="validationCustom2" class="col-xl-3 col-md-4"
+                      ><span>*</span> Confirm New Password</label
+                    >
+                    <input
+                      class="form-control col-xl-5 col-md-7"
+                      id="validationCustom2"
+                      type="password"
+                      required=""
+                      formControlName="confirmNewPassword"
+                      [ngClass]="{
+                        'is-invalid':
+                          ((passwordFormControl.confirmNewPassword.touched ||
+                            submitted) &&
+                            passwordFormControl.confirmNewPassword.errors
+                              ?.required) ||
+                          (passwordFormControl.confirmNewPassword.value !==
+                            passwordFormControl.newPassword.value &&
+                            passwordFormControl.confirmNewPassword.value
+                              .length > 0)
+                      }"
+                    />
+                    <div class="invalid-feedback col-md-7 offset-md-4">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          (passwordFormControl.confirmNewPassword.touched ||
+                            submitted) &&
+                          passwordFormControl.confirmNewPassword.errors
+                            ?.required
+                        "
+                      >
+                        This field is required
+                      </span>
+                    </div>
+                    <div class="invalid-feedback col-md-7 offset-md-4 d-block">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          passwordFormControl.confirmNewPassword.value !==
+                            passwordFormControl.newPassword.value &&
+                          passwordFormControl.confirmNewPassword.value
+                        "
+                      >
+                        New password and Confirm new password are not the same
+                      </span>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-11">
+                      <div class="row float-right">
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          (click)="changePassword()"
+                        >
+                          CHANGE PASSWORD
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

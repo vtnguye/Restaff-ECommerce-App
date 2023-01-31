@@ -1,0 +1,229 @@
+<div class="modal-body wishlist-tab theme-tab">
+  <!-- <h3 class="text-center mb-4" style="font-weight: bold; color: black">
+    Please login to go to wish list
+  </h3> -->
+
+  <ngb-tabset
+    [activeId]="activeIdString"
+    [justify]="'center'"
+    [type]="'pills'"
+    class="tabs tab-title"
+  >
+    <ngb-tab id="tab-login">
+      <ng-template ngbTabTitle class="m-0">Login</ng-template>
+      <ng-template ngbTabContent
+        ><form class="theme-form" [formGroup]="loginForm">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              formControlName="username"
+              autocomplete="username"
+              placeholder="Username"
+              required=""
+              [ngClass]="{ 'is-invalid': submitted && loginF.username.errors }"
+            />
+            <div
+              *ngIf="submitted && loginF.username.errors"
+              class="invalid-feedback"
+            >
+              <div *ngIf="loginF.username.errors.required">
+                Username is required
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              formControlName="password"
+              autocomplete="new-password"
+              placeholder="Enter your password"
+              required=""
+              [ngClass]="{ 'is-invalid': submitted && loginF.password.errors }"
+            />
+            <div
+              *ngIf="submitted && loginF.password.errors"
+              class="invalid-feedback"
+            >
+              <div *ngIf="loginF.password.errors.required">
+                Password is required
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-solid" (click)="onLogin()">Login</button>
+        </form>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab id="tab-register">
+      <ng-template ngbTabTitle>Register</ng-template>
+      <ng-template ngbTabContent
+        ><form class="theme-form" [formGroup]="registForm">
+          <div class="form-row">
+            <div class="col-md-6 form-group">
+              <label for="firstName">First Name</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="firstName"
+                autocomplete="fname"
+                id="firstName"
+                placeholder="First Name"
+                required=""
+                [ngClass]="{
+                  'is-invalid': submitted && registerF.firstName.errors
+                }"
+              />
+              <div
+                *ngIf="submitted && registerF.firstName.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="registerF.firstName.errors.required">
+                  First Name is required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="lastName">Last Name</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="lastName"
+                id="lastName"
+                autocomplete="lname"
+                placeholder="Last Name"
+                required=""
+                [ngClass]="{
+                  'is-invalid': submitted && registerF.lastName.errors
+                }"
+              />
+              <div
+                *ngIf="submitted && registerF.lastName.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="registerF.lastName.errors.required">
+                  Last Name is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-6 form-group">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="username"
+                id="username"
+                autocomplete="username"
+                placeholder="Username"
+                required=""
+                [ngClass]="{
+                  'is-invalid': submitted && registerF.username.errors
+                }"
+              />
+              <div
+                *ngIf="submitted && registerF.username.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="registerF.username.errors?.required">
+                  Username is required
+                </div>
+                <div *ngIf="registerF.username.errors?.isUserNameUnique">
+                  UserName is exsist
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                formControlName="email"
+                id="email"
+                autocomplete="email"
+                placeholder="Email"
+                required=""
+                [ngClass]="{
+                  'is-invalid': submitted && registerF.email.errors
+                }"
+              />
+              <div
+                *ngIf="submitted && registerF.email.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="registerF.email.errors?.required">
+                  Emaill is required
+                </div>
+                <div *ngIf="registerF.email.errors?.pattern">
+                  Fail type email
+                </div>
+                <div *ngIf="registerF.email.errors?.isEmailUnique">
+                  Email is exsist
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-6 form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                formControlName="password"
+                id="password"
+                autocomplete="new-password"
+                placeholder="Password"
+                required=""
+                [ngClass]="{
+                  'is-invalid': submitted && registerF.password.errors
+                }"
+              />
+              <div
+                *ngIf="submitted && registerF.password.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="registerF.password.errors.required">
+                  Password is required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="confirmpassword">Confirm Password</label>
+              <input
+                type="password"
+                class="form-control"
+                formControlName="confirmpassword"
+                id="confirmpassword"
+                autocomplete="new-password"
+                placeholder="Confirm password"
+                required=""
+                [ngClass]="{
+                  'is-invalid': submitted && registerF.confirmpassword.errors
+                }"
+              />
+              <div
+                *ngIf="submitted && registerF.confirmpassword.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="registerF.confirmpassword.errors.required">
+                  Confirm Password is required
+                </div>
+                <div *ngIf="registerF.confirmpassword.errors.mustMatch">
+                  Passwords must match
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-solid" (click)="onRegist()">
+            create Account
+          </button>
+        </form>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>

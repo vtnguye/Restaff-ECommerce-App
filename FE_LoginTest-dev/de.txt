@@ -1,3 +1,0 @@
-Quan ly Khoa (Id, Name)
-Quan ly lop hoc(Id,KhoaId, Name)
-Quan ly hoc sinh (Id, LopHocId, NAme ) (search name, search LopHocId)

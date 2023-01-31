@@ -1,0 +1,7 @@
+{
+  "region": "us-east-2",
+  "profile": "def",
+  "s3-bucket": "restaff-ecommerce-project",
+  "template": "serverless.template",
+  "stack-name": "BE-restaff"
+}

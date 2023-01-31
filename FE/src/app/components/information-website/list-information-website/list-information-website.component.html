@@ -1,0 +1,265 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card tab2-card mb-4">
+        <div class="card-body">
+          <div
+            class="tab-pane fade show active"
+            id="top-profile"
+            role="tabpanel"
+            aria-labelledby="top-profile-tab"
+          >
+            <div class="row">
+              <div class="col-11">
+                <div
+                  class="d-flex justify-content-between align-items-baseline"
+                >
+                  <h5 class="f-w-600">Website Information</h5>
+                  <div *ngIf="!update">
+                    <button (click)="updateSwitch()" class="btn btn-primary">
+                      Update Information
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive profile-table" *ngIf="!update">
+              <table class="table table-responsive">
+                <div *ngIf="infoWeb">
+                  <tbody>
+                    <tr>
+                      <td>Title:</td>
+                      <td>{{ infoWeb.title }}</td>
+                    </tr>
+                    <tr>
+                      <td>Address:</td>
+                      <td>{{ infoWeb.address }}</td>
+                    </tr>
+                    <tr>
+                      <td>Phone</td>
+                      <td>{{ infoWeb.phone }}</td>
+                    </tr>
+                    <tr>
+                      <td>Email:</td>
+                      <td>{{ infoWeb.email }}</td>
+                    </tr>
+                    <tr>
+                      <td>Fax:</td>
+                      <td>{{ infoWeb.fax }}</td>
+                    </tr>
+                    <tr>
+                      <td>Description:</td>
+                      <td>{{ infoWeb.description }}</td>
+                    </tr>
+                    <tr>
+                      <td>Logo:</td>
+                      <!-- <td>{{infoWeb.logo}}</td> -->
+                      <img
+                        appUiImageLoader
+                        [src]="infoWeb?.logo"
+                        style="width: 200px; height: auto"
+                      />
+                    </tr>
+                  </tbody>
+                </div>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="update">
+            <form
+              [formGroup]="inforWebForm"
+              class="needs-validation user-add"
+              novalidate=""
+            >
+              <div class="form-group row">
+                <label for="validationCustom5" class="col-xl-3 col-md-4"
+                  ><span>*</span> Title</label
+                >
+                <input
+                  class="form-control col-xl-5 col-md-7"
+                  id="validationCustom5"
+                  type="text"
+                  required=""
+                  formControlName="title"
+                />
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    (inforWebFormControl.title.touched || submitted) &&
+                    inforWebFormControl.title.errors?.required
+                  "
+                >
+                  This field is required
+                </span>
+              </div>
+              <div class="form-group row">
+                <label for="validationCustom0" class="col-xl-3 col-md-4"
+                  ><span>*</span> Address</label
+                >
+                <input
+                  class="form-control col-xl-5 col-md-7"
+                  id="validationCustom0"
+                  type="text"
+                  required
+                  formControlName="address"
+                />
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    (inforWebFormControl.address.touched || submitted) &&
+                    inforWebFormControl.address.errors?.required
+                  "
+                >
+                  This field is required
+                  <span
+                    class="text-danger"
+                    *ngIf="inforWebFormControl.address.hasError('maxlength')"
+                    >Max: 30 characters</span
+                  >
+                  <span
+                    class="text-danger"
+                    *ngIf="inforWebFormControl.address.hasError('minlength')"
+                    >Min: 3 characters</span
+                  >
+                </span>
+              </div>
+              <div class="form-group row">
+                <label for="validationCustom1" class="col-xl-3 col-md-4"
+                  ><span>*</span> Phone</label
+                >
+                <input
+                  class="form-control col-xl-5 col-md-7"
+                  id="validationCustom1"
+                  type="text"
+                  formControlName="phone"
+                />
+              </div>
+              <span
+                class="text-danger"
+                *ngIf="
+                  (inforWebFormControl.phone.touched || submitted) &&
+                  inforWebFormControl.phone.errors?.required
+                "
+              >
+                This field is required
+              </span>
+              <div class="form-group row">
+                <label for="validationCustom2" class="col-xl-3 col-md-4"
+                  ><span>*</span> Email</label
+                >
+                <input
+                  class="form-control col-xl-5 col-md-7"
+                  id="validationCustom2"
+                  type="text"
+                  required=""
+                  formControlName="email"
+                />
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    (inforWebFormControl.email.touched || submitted) &&
+                    inforWebFormControl.email.errors?.required
+                  "
+                >
+                  This field is required
+                </span>
+              </div>
+              <div class="form-group row">
+                <label for="validationCustom3" class="col-xl-3 col-md-4"
+                  ><span>*</span> Fax</label
+                >
+                <input
+                  class="form-control col-xl-5 col-md-7"
+                  id="validationCustom3"
+                  type="text"
+                  required=""
+                  formControlName="fax"
+                />
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    (inforWebFormControl.fax.touched || submitted) &&
+                    inforWebFormControl.fax.errors?.required
+                  "
+                >
+                  This field is required
+                </span>
+              </div>
+              <div class="form-group row">
+                <label for="validationCustom6" class="col-xl-3 col-md-4"
+                  ><span>*</span> Description</label
+                >
+                <textarea
+                  class="form-control col-xl-5 col-md-7"
+                  id="validationCustom6"
+                  type="text"
+                  required=""
+                  formControlName="description"
+                ></textarea>
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    (inforWebFormControl.description.touched || submitted) &&
+                    inforWebFormControl.description.errors?.required
+                  "
+                >
+                  This field is required
+                </span>
+              </div>
+              <div class="form-group row">
+                <label for="validationCustom4" class="col-xl-3 col-md-4"
+                  ><span>*</span> Logo</label
+                >
+                <input
+                  class="form-control"
+                  id="validationCustom4"
+                  type="text"
+                  required=""
+                  formControlName="logo"
+                  hidden
+                />
+                <div class="col-xl-5 col-md-7 p-0">
+                  <app-upload-file
+                    [data]="modalFile"
+                    [fileURL]="fileURL"
+                    styleFile="width: 100%; height: auto;"
+                    (onChange)="onChangeData($event)"
+                  ></app-upload-file>
+                </div>
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    (inforWebFormControl.logo.touched || submitted) &&
+                    inforWebFormControl.logo.errors?.required
+                  "
+                >
+                  This field is required
+                </span>
+              </div>
+              <div class="row">
+                <div class="col-11">
+                  <div class="row float-right">
+                    <button
+                      (click)="updateSwitch()"
+                      class="btn btn-default"
+                      *ngIf="update"
+                    >
+                      CANCEL
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      (click)="updateDetails()"
+                    >
+                      SAVE
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

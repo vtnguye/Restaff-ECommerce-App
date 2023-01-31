@@ -1,0 +1,25 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Description": "Starting template for an AWS Serverless Application.",
+  "Resources": {
+    "ConfigBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "PublicRead",
+        "BucketName": "restaff-shopping"
+      }
+    },
+    "Database": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "DBInstanceClass": "db.t2.micro",
+        "AllocatedStorage": "20",
+        "Engine": "sqlserver-ex",
+        "PubliclyAccessible": true,
+        "MasterUsername": "admin",
+        "MasterUserPassword": "Thevy.1234"
+      }
+    }
+  }
+}
